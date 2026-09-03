@@ -2,3 +2,15 @@
 [     285ms] [LOG] [Fast Refresh] done in 163ms @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js:776
 [     357ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js:776
 [     373ms] [LOG] [HMR] connected @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js:776
+[  326630ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js:776
+[  326660ms] [LOG] [Fast Refresh] done in 3ms @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js:776
+[  359999ms] [LOG] [Fast Refresh] done in 3ms @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js:776
+[  363669ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js:776
+[  363884ms] [LOG] [Fast Refresh] done in 281ms @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js:776
+[  365223ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:3050/_next/hmr?id=8KVWCH-oquHtjtLQz0CBl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_client_0_90u2t._.js:16348
+[  366226ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:3050/_next/hmr?id=8KVWCH-oquHtjtLQz0CBl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_client_0_90u2t._.js:16348
+[  367236ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:3050/_next/hmr?id=8KVWCH-oquHtjtLQz0CBl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_client_0_90u2t._.js:16348
+[  368244ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:3050/_next/hmr?id=8KVWCH-oquHtjtLQz0CBl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_client_0_90u2t._.js:16348
+[  369249ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:3050/_next/hmr?id=8KVWCH-oquHtjtLQz0CBl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_client_0_90u2t._.js:16348
+[  374259ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:3050/_next/hmr?id=8KVWCH-oquHtjtLQz0CBl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_client_0_90u2t._.js:16348
+[  379270ms] [ERROR] WebSocket connection to 'ws://127.0.0.1:3050/_next/hmr?id=8KVWCH-oquHtjtLQz0CBl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:3050/_next/static/chunks/node_modules_next_dist_client_0_90u2t._.js:16348

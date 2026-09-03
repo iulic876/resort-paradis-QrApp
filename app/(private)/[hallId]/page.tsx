@@ -2,184 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { notFound, useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
-type ResponseItem = {
-  time: string;
-  score: string;
-  text: string;
-};
-
-type Question = {
-  title: string;
-  metric: string;
-  detail: string;
-  answers: ResponseItem[];
-};
-
-type Table = {
-  id: number;
-  scans: number;
-  responses: number;
-  rating: string;
-  lastScan: string;
-  status: "Activ" | "Linistit" | "Nou";
-  latest: ResponseItem[];
-  questions: Question[];
-};
-
-const tables: Table[] = [
-  {
-    id: 12,
-    scans: 48,
-    responses: 18,
-    rating: "4.8",
-    lastScan: "21:44",
-    status: "Activ",
-    latest: [
-      { time: "21:44", score: "5/5", text: "Servire foarte buna" },
-      { time: "21:31", score: "5/5", text: "Totul a fost rapid" },
-      { time: "21:08", score: "4/5", text: "Muzica putin tare" },
-    ],
-    questions: [
-      {
-        title: "Cum a fost servirea?",
-        metric: "5/5",
-        detail: "12 raspunsuri pozitive",
-        answers: [
-          { time: "21:44", score: "5/5", text: "Servire foarte buna" },
-          { time: "20:58", score: "5/5", text: "Chelnerul a fost atent" },
-        ],
-      },
-      {
-        title: "Cat de rapid a venit comanda?",
-        metric: "5/5",
-        detail: "Timp perceput foarte bun",
-        answers: [
-          { time: "21:31", score: "5/5", text: "Totul a fost rapid" },
-          { time: "20:46", score: "5/5", text: "Comanda a venit repede" },
-        ],
-      },
-      {
-        title: "Cum a fost atmosfera?",
-        metric: "4/5",
-        detail: "Un raspuns semnaleaza volum ridicat",
-        answers: [
-          { time: "21:08", score: "4/5", text: "Muzica putin tare" },
-          { time: "20:12", score: "5/5", text: "Atmosfera placuta" },
-        ],
-      },
-      {
-        title: "Ati recomanda restaurantul?",
-        metric: "94%",
-        detail: "17 din 18 raspunsuri sunt da",
-        answers: [
-          { time: "21:44", score: "Da", text: "As reveni cu prietenii" },
-          { time: "19:55", score: "Da", text: "Experienta buna per total" },
-        ],
-      },
-    ],
-  },
-  {
-    id: 7,
-    scans: 35,
-    responses: 11,
-    rating: "4.6",
-    lastScan: "21:36",
-    status: "Activ",
-    latest: [
-      { time: "21:36", score: "5/5", text: "Pastele au fost excelente" },
-      { time: "20:27", score: "4/5", text: "Ar mai merge un desert" },
-      { time: "20:02", score: "5/5", text: "Ambianta calma" },
-    ],
-    questions: [
-      {
-        title: "Cum a fost mancarea?",
-        metric: "5/5",
-        detail: "Cel mai bun scor al serii",
-        answers: [
-          { time: "21:36", score: "5/5", text: "Pastele au fost excelente" },
-          { time: "19:48", score: "5/5", text: "Gust si plating bune" },
-        ],
-      },
-      {
-        title: "Cum a fost servirea?",
-        metric: "4/5",
-        detail: "Feedback stabil",
-        answers: [
-          { time: "20:27", score: "4/5", text: "Ar mai merge un desert" },
-          { time: "20:02", score: "5/5", text: "Ambianta calma" },
-        ],
-      },
-    ],
-  },
-  {
-    id: 4,
-    scans: 21,
-    responses: 8,
-    rating: "4.2",
-    lastScan: "20:51",
-    status: "Linistit",
-    latest: [
-      { time: "20:51", score: "4/5", text: "Masa curata si comoda" },
-      { time: "19:40", score: "4/5", text: "Asteptare un pic lunga" },
-      { time: "18:58", score: "5/5", text: "Personal prietenos" },
-    ],
-    questions: [
-      {
-        title: "Cat de confortabila a fost masa?",
-        metric: "4/5",
-        detail: "Feedback bun pe zona de confort",
-        answers: [
-          { time: "20:51", score: "4/5", text: "Masa curata si comoda" },
-          { time: "18:58", score: "5/5", text: "Personal prietenos" },
-        ],
-      },
-      {
-        title: "Cat de repede ati fost serviti?",
-        metric: "4/5",
-        detail: "O mentiune despre asteptare",
-        answers: [
-          { time: "19:40", score: "4/5", text: "Asteptare un pic lunga" },
-          { time: "18:20", score: "4/5", text: "Acceptabil la ora aglomerata" },
-        ],
-      },
-    ],
-  },
-  {
-    id: 15,
-    scans: 12,
-    responses: 3,
-    rating: "5.0",
-    lastScan: "21:12",
-    status: "Nou",
-    latest: [
-      { time: "21:12", score: "5/5", text: "Totul perfect" },
-      { time: "20:05", score: "5/5", text: "Recomand" },
-      { time: "18:44", score: "5/5", text: "Foarte bun burgerul" },
-    ],
-    questions: [
-      {
-        title: "Ati recomanda restaurantul?",
-        metric: "100%",
-        detail: "Primele raspunsuri sunt excelente",
-        answers: [
-          { time: "21:12", score: "Da", text: "Totul perfect" },
-          { time: "20:05", score: "Da", text: "Recomand" },
-        ],
-      },
-      {
-        title: "Cum a fost mancarea?",
-        metric: "5/5",
-        detail: "Scor maxim pe primele scanari",
-        answers: [
-          { time: "18:44", score: "5/5", text: "Foarte bun burgerul" },
-          { time: "20:05", score: "5/5", text: "Portii generoase" },
-        ],
-      },
-    ],
-  },
-];
+import {
+  getHall,
+  getHallTables,
+  type ResponseItem,
+  type Table,
+} from "@/lib/halls-data";
 
 const statusStyles = {
   Activ: "bg-[#D5333C] text-white",
@@ -191,17 +22,42 @@ function classNames(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Home() {
-  const [selectedTableId, setSelectedTableId] = useState(12);
+export default function HallPage() {
+  const params = useParams<{ hallId: string }>();
+  const hall = getHall(params.hallId);
+  const hallTables = useMemo(
+    () => getHallTables(params.hallId),
+    [params.hallId],
+  );
+
+  const [selectedTableId, setSelectedTableId] = useState(
+    hallTables[0]?.id ?? null,
+  );
   const [questionsOpen, setQuestionsOpen] = useState(false);
 
   const selectedTable = useMemo(
-    () => tables.find((table) => table.id === selectedTableId) ?? tables[0],
-    [selectedTableId],
+    () =>
+      hallTables.find((table) => table.id === selectedTableId) ??
+      hallTables[0] ??
+      null,
+    [hallTables, selectedTableId],
   );
 
-  const totalResponses = tables.reduce((sum, table) => sum + table.responses, 0);
-  const totalScans = tables.reduce((sum, table) => sum + table.scans, 0);
+  if (!hall) {
+    notFound();
+  }
+
+  const totalResponses = hallTables.reduce(
+    (sum, table) => sum + table.responses,
+    0,
+  );
+  const totalScans = hallTables.reduce((sum, table) => sum + table.scans, 0);
+  const averageRating = hallTables.length
+    ? (
+        hallTables.reduce((sum, table) => sum + Number(table.rating), 0) /
+        hallTables.length
+      ).toFixed(1)
+    : "-";
 
   function selectTable(id: number) {
     setSelectedTableId(id);
@@ -209,62 +65,34 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#F7F1E6] text-[#211B18]">
-      <div className="flex min-h-screen">
-        <aside className="hidden w-24 shrink-0 border-r border-[#E6D6B9] bg-[#FFF9EF] px-3 py-6 lg:block">
-          <div className="mb-8 rounded-lg bg-[#7B1D22] px-3 py-4 text-center text-sm font-black leading-tight text-white">
-            QR
-            <br />
-            App
+    <div className="min-h-screen overflow-hidden">
+      <section
+        className={classNames(
+          "flex min-w-0 flex-1 flex-col px-4 py-5 sm:px-6",
+          selectedTable && "lg:pr-[420px]",
+        )}
+      >
+        <header className="mb-6 flex flex-col gap-4 pb-5 md:flex-row md:items-end md:justify-between">
+          <div>
+
+            <h1 className="mt-2 text-3xl font-black leading-tight text-[#211B18] sm:text-4xl">
+              {hall.label}
+            </h1>
           </div>
-          <nav className="space-y-3" aria-label="Mese">
-            {tables.map((table) => (
-              <button
-                className={classNames(
-                  "flex h-11 w-full items-center justify-center rounded-lg border text-sm font-bold transition",
-                  selectedTable.id === table.id
-                    ? "border-[#D8B56F] bg-[#FFF2CD] text-[#7B1D22] shadow-sm"
-                    : "border-[#E8D9BE] bg-white text-[#6C6259] hover:border-[#D8B56F]",
-                )}
-                key={table.id}
-                onClick={() => selectTable(table.id)}
-                type="button"
-              >
-                {table.id}
-              </button>
-            ))}
-          </nav>
-        </aside>
 
-        <section className="flex min-w-0 flex-1 flex-col px-4 py-5 sm:px-6 lg:pr-[420px]">
-          <header className="mb-6 flex flex-col gap-4 border-b border-[#E5D5B8] pb-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8D7560]">
-                Feedback QR
-              </p>
-              <h1 className="mt-2 text-3xl font-black leading-tight text-[#211B18] sm:text-4xl">
-                Mese si raspunsuri
-              </h1>
-            </div>
-            <div className="grid grid-cols-2 gap-3 sm:flex">
-              <Link
-                className="flex items-center justify-center rounded-lg bg-[#D5333C] px-4 py-3 text-sm font-black text-white shadow-[0_10px_24px_rgba(213,51,60,0.18)] transition hover:bg-[#B92731] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2 focus:ring-offset-[#F7F1E6]"
-                href="/feedback"
-              >
-                Formular public
-              </Link>
-              <Metric label="Scanari" value={String(totalScans)} />
-              <Metric label="Raspunsuri" value={String(totalResponses)} />
-              <Metric label="Rating mediu" value="4.7" />
-            </div>
-          </header>
+        </header>
 
+        {hallTables.length === 0 ? (
+          <p className="text-sm text-[#776D64]">
+            Nu exista mese configurate pentru aceasta sala.
+          </p>
+        ) : (
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {tables.map((table) => (
+            {hallTables.map((table) => (
               <button
                 className={classNames(
                   "group min-h-44 rounded-lg border bg-white p-4 text-left shadow-[0_12px_30px_rgba(91,59,21,0.06)] transition hover:-translate-y-0.5 hover:border-[#D8B56F] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2 focus:ring-offset-[#F7F1E6]",
-                  selectedTable.id === table.id
+                  selectedTable?.id === table.id
                     ? "border-[#D8B56F]"
                     : "border-[#E8D9BE]",
                 )}
@@ -297,25 +125,31 @@ export default function Home() {
 
                 <div className="mt-5 flex items-center justify-between border-t border-[#F0E5D2] pt-4 text-sm">
                   <span className="text-[#776D64]">Ultima scanare</span>
-                  <span className="font-black text-[#211B18]">{table.lastScan}</span>
+                  <span className="font-black text-[#211B18]">
+                    {table.lastScan}
+                  </span>
                 </div>
               </button>
             ))}
           </div>
-        </section>
-      </div>
+        )}
+      </section>
 
-      <TableDrawer
-        onOpenQuestions={() => setQuestionsOpen(true)}
-        questionsOpen={questionsOpen}
-        table={selectedTable}
-      />
-      <QuestionsDrawer
-        onClose={() => setQuestionsOpen(false)}
-        open={questionsOpen}
-        table={selectedTable}
-      />
-    </main>
+      {selectedTable && (
+        <>
+          <TableDrawer
+            onOpenQuestions={() => setQuestionsOpen(true)}
+            questionsOpen={questionsOpen}
+            table={selectedTable}
+          />
+          <QuestionsDrawer
+            onClose={() => setQuestionsOpen(false)}
+            open={questionsOpen}
+            table={selectedTable}
+          />
+        </>
+      )}
+    </div>
   );
 }
 
@@ -328,7 +162,13 @@ function Metric({ label, value }: { label: string; value: string }) {
   );
 }
 
-function SmallMetric({ label, value }: { label: string; value: string | number }) {
+function SmallMetric({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) {
   return (
     <div>
       <p className="text-xs text-[#776D64]">{label}</p>
