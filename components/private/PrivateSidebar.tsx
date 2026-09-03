@@ -69,6 +69,39 @@ export function PrivateSidebar() {
             );
           })}
         </nav>
+
+        <button
+          className="mt-4 flex items-center gap-2 pl-3 text-left text-sm font-medium text-[#6C6259] transition hover:text-[#211B18]"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          Adauga sala
+        </button>
+
+        <div className="mt-6 border-t border-[#E6D6B9] pt-4">
+          <Link
+            className={classNames(
+              "block py-1.5 pl-3 text-sm transition",
+              pathname === "/intrebari"
+                ? "font-semibold text-[#211B18]"
+                : "font-medium text-[#6C6259] hover:text-[#211B18]",
+            )}
+            href="/intrebari"
+          >
+            Toate intrebarile
+          </Link>
+        </div>
       </aside>
     </>
   );

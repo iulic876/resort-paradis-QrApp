@@ -107,39 +107,48 @@ public/
 
 ## Model de date
 
+Schema Prisma trebuie sa ramana MVP, fara useri, membership, organizatii sau configurari grele.
+
 ```ts
-type Restaurant = {
+type Hall = {
   id: string;
   name: string;
-  brandColor: string;
+  slug: string;
+  shortLabel: string;
 };
 
 type Table = {
   id: string;
-  restaurantId: string;
-  label: string;
-  qrToken: string;
+  hallId: string;
+  name: string;
+  number: number;
+  status: "ACTIVE" | "QUIET" | "NEW";
 };
 
-type FeedbackQuestion = {
-  id: string;
-  restaurantId: string;
-  label: string;
-  type: "rating-1-5" | "single-choice" | "text" | "nps";
-  required: boolean;
-  options?: string[];
-};
-
-type FeedbackSubmission = {
+type QrCode = {
   id: string;
   tableId: string;
-  createdAt: string;
-  answers: FeedbackAnswer[];
+  token: string;
+  imageUrl?: string;
+  scanCount: number;
+  lastScannedAt?: string;
 };
 
-type FeedbackAnswer = {
-  questionId: string;
-  value: string | number;
+type Question = {
+  id: string;
+  hallId?: string;
+  title: string;
+  type: "RATING" | "SINGLE_CHOICE" | "TEXT" | "NPS";
+  options?: unknown;
+  required: boolean;
+};
+
+type FeedbackResponse = {
+  id: string;
+  tableId: string;
+  answers: unknown;
+  rating?: number;
+  comment?: string;
 };
 ```
 
@@ -243,4 +252,4 @@ Cand se adauga componente noi, ele trebuie sa foloseasca aceleasi tokenuri si ac
 - Sa tinem `tableId` ca sursa de adevar in client in loc de `qrToken`.
 - Sa facem success screen-ul doar cu state local, pentru ca se pierde la refresh.
 - Sa copiem aceleasi clase Tailwind in multe locuri fara componente mici reutilizabile.
-- Sa adaugam backend inainte sa stabilim clar modelul `Table -> Question -> Submission -> Answer`.
+- Sa adaugam backend prea complex inainte sa avem clar modelul simplu `Hall -> Table -> QrCode -> Question -> FeedbackResponse`.

@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TableStatus {
+  ACTIVE
+  QUIET
+  NEW
+}
+
+enum QuestionType {
+  RATING
+  SINGLE_CHOICE
+  TEXT
+  NPS
+}
+
+enum TemplateStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+model Hall {
+  id                String   @id @default(cuid())
+  name              String
+  slug              String   @unique
+  shortLabel        String
+  sortOrder         Int      @default(0)
+  defaultTemplateId String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  questions       Question[]
+  tables          Table[]
+  defaultTemplate QuestionTemplate? @relation(fields: [defaultTemplateId], references: [id], onDelete: SetNull)
+
+  @@index([defaultTemplateId])
+  @@map("halls")
+}
+
+model Table {
+  id         String      @id @default(cuid())
+  hallId     String
+  templateId String?
+  name       String
+  number     Int
+  status     TableStatus @default(NEW)
+  isActive   Boolean     @default(true)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  hall      Hall               @relation(fields: [hallId], references: [id], onDelete: Cascade)
+  template  QuestionTemplate?  @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  qr        QrCode?
+  responses FeedbackResponse[]
+
+  @@unique([hallId, number])
+  @@index([hallId])
+  @@index([templateId])
+  @@map("tables")
+}
+
+model QrCode {
+  id            String    @id @default(cuid())
+  tableId       String    @unique
+  token         String    @unique
+  imageUrl      String?
+  scanCount     Int       @default(0)
+  lastScannedAt DateTime?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  table Table @relation(fields: [tableId], references: [id], onDelete: Cascade)
+
+  @@map("qr_codes")
+}
+
+model Question {
+  id        String       @id @default(cuid())
+  hallId    String?
+  title     String
+  type      QuestionType
+  options   Json?
+  required  Boolean      @default(false)
+  sortOrder Int          @default(0)
+  isActive  Boolean      @default(true)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  hall Hall? @relation(fields: [hallId], references: [id], onDelete: Cascade)
+
+  @@index([hallId, sortOrder])
+  @@map("questions")
+}
+
+model FeedbackResponse {
+  id        String   @id @default(cuid())
+  tableId   String
+  answers   Json
+  rating    Int?
+  comment   String?
+  createdAt DateTime @default(now())
+
+  table Table @relation(fields: [tableId], references: [id], onDelete: Cascade)
+
+  @@index([tableId, createdAt])
+  @@map("feedback_responses")
+}
+
+model QuestionTemplate {
+  id        String         @id @default(cuid())
+  name      String
+  status    TemplateStatus @default(DRAFT)
+  version   Int            @default(1)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  questions      TemplateQuestion[]
+  tables         Table[]
+  hallsAsDefault Hall[]
+
+  @@map("question_templates")
+}
+
+model TemplateQuestion {
+  id         String       @id @default(cuid())
+  templateId String
+  title      String
+  type       QuestionType
+  helper     String?
+  required   Boolean      @default(false)
+  sortOrder  Int          @default(0)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  template QuestionTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@index([templateId, sortOrder])
+  @@map("template_questions")
+}

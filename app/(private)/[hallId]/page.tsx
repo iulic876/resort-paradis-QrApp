@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
@@ -11,12 +10,7 @@ import {
   type ResponseItem,
   type Table,
 } from "@/lib/halls-data";
-
-const statusStyles = {
-  Activ: "bg-[#D5333C] text-white",
-  Linistit: "bg-[#7E8C6A] text-white",
-  Nou: "bg-[#F8ECCC] text-[#7B1D22]",
-};
+import { TablesList } from "@/components/private/TablesList";
 
 function classNames(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -47,18 +41,6 @@ export default function HallPage() {
     notFound();
   }
 
-  const totalResponses = hallTables.reduce(
-    (sum, table) => sum + table.responses,
-    0,
-  );
-  const totalScans = hallTables.reduce((sum, table) => sum + table.scans, 0);
-  const averageRating = hallTables.length
-    ? (
-        hallTables.reduce((sum, table) => sum + Number(table.rating), 0) /
-        hallTables.length
-      ).toFixed(1)
-    : "-";
-
   function selectTable(id: number) {
     setSelectedTableId(id);
     setQuestionsOpen(false);
@@ -87,50 +69,12 @@ export default function HallPage() {
             Nu exista mese configurate pentru aceasta sala.
           </p>
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {hallTables.map((table) => (
-              <button
-                className={classNames(
-                  "group min-h-44 rounded-lg border bg-white p-4 text-left shadow-[0_12px_30px_rgba(91,59,21,0.06)] transition hover:-translate-y-0.5 hover:border-[#D8B56F] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2 focus:ring-offset-[#F7F1E6]",
-                  selectedTable?.id === table.id
-                    ? "border-[#D8B56F]"
-                    : "border-[#E8D9BE]",
-                )}
-                key={table.id}
-                onClick={() => selectTable(table.id)}
-                type="button"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8D7560]">
-                      Masa
-                    </p>
-                    <h2 className="mt-1 text-2xl font-black">Masa {table.id}</h2>
-                  </div>
-                  <span
-                    className={classNames(
-                      "rounded-md px-2.5 py-1 text-xs font-bold",
-                      statusStyles[table.status],
-                    )}
-                  >
-                    {table.status}
-                  </span>
-                </div>
-
-                <div className="mt-7 grid grid-cols-3 gap-3">
-                  <SmallMetric label="Scanari" value={table.scans} />
-                  <SmallMetric label="Rasp." value={table.responses} />
-                  <SmallMetric label="Rating" value={table.rating} />
-                </div>
-
-                <div className="mt-5 flex items-center justify-between border-t border-[#F0E5D2] pt-4 text-sm">
-                  <span className="text-[#776D64]">Ultima scanare</span>
-                  <span className="font-black text-[#211B18]">
-                    {table.lastScan}
-                  </span>
-                </div>
-              </button>
-            ))}
+          <div className="w-full">
+            <TablesList
+              onSelectTable={selectTable}
+              selectedTableId={selectedTable?.id ?? null}
+              tables={hallTables}
+            />
           </div>
         )}
       </section>
@@ -149,30 +93,6 @@ export default function HallPage() {
           />
         </>
       )}
-    </div>
-  );
-}
-
-function Metric({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-[#E8D9BE] bg-white px-4 py-3 shadow-[0_10px_24px_rgba(91,59,21,0.05)]">
-      <p className="text-xs text-[#776D64]">{label}</p>
-      <p className="mt-1 text-xl font-black">{value}</p>
-    </div>
-  );
-}
-
-function SmallMetric({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | number;
-}) {
-  return (
-    <div>
-      <p className="text-xs text-[#776D64]">{label}</p>
-      <p className="mt-1 text-lg font-black text-[#211B18]">{value}</p>
     </div>
   );
 }

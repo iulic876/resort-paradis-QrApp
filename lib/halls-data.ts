@@ -14,6 +14,8 @@ export type Question = {
 export type Table = {
   id: number;
   hallId: string;
+  name: string;
+  qrStatus: "activ" | "lipsa";
   scans: number;
   responses: number;
   rating: string;
@@ -29,6 +31,24 @@ export type Hall = {
   shortLabel: string;
 };
 
+export type QuestionType = "rating" | "single" | "text" | "nps";
+
+export type TemplateQuestion = {
+  id: string;
+  title: string;
+  type: QuestionType;
+  helper: string;
+  required: boolean;
+};
+
+export type QuestionTemplate = {
+  id: string;
+  name: string;
+  badge: string;
+  tablesCount: number;
+  questions: TemplateQuestion[];
+};
+
 export const halls: Hall[] = [
   { id: "main", label: "Sala principala", shortLabel: "SP" },
   { id: "terrace", label: "Terasa", shortLabel: "TR" },
@@ -40,6 +60,8 @@ export const tables: Table[] = [
   {
     id: 12,
     hallId: "main",
+    name: "Zona centru",
+    qrStatus: "activ",
     scans: 48,
     responses: 18,
     rating: "4.8",
@@ -92,6 +114,8 @@ export const tables: Table[] = [
   {
     id: 7,
     hallId: "main",
+    name: "Zona intrare",
+    qrStatus: "activ",
     scans: 35,
     responses: 11,
     rating: "4.6",
@@ -126,6 +150,8 @@ export const tables: Table[] = [
   {
     id: 4,
     hallId: "main",
+    name: "Zona terasa",
+    qrStatus: "lipsa",
     scans: 21,
     responses: 8,
     rating: "4.2",
@@ -160,6 +186,8 @@ export const tables: Table[] = [
   {
     id: 15,
     hallId: "main",
+    name: "Zona bar",
+    qrStatus: "activ",
     scans: 12,
     responses: 3,
     rating: "5.0",
@@ -188,6 +216,154 @@ export const tables: Table[] = [
           { time: "18:44", score: "5/5", text: "Foarte bun burgerul" },
           { time: "20:05", score: "5/5", text: "Portii generoase" },
         ],
+      },
+    ],
+  },
+];
+
+export const questionTemplates: QuestionTemplate[] = [
+  {
+    id: "candy-bar",
+    name: "Mese cu Candy Bar",
+    badge: "activ",
+    tablesCount: 12,
+    questions: [
+      {
+        id: "cb-1",
+        title: "Cum ti s-a parut candy bar-ul?",
+        type: "rating",
+        helper: "rating 1-5",
+        required: false,
+      },
+      {
+        id: "cb-2",
+        title: "Ce ai incercat de la candy bar?",
+        type: "single",
+        helper: "alegere simpla: tort, candy, fructe",
+        required: true,
+      },
+      {
+        id: "cb-3",
+        title: "Calitatea deserturilor",
+        type: "rating",
+        helper: "rating 1-5",
+        required: true,
+      },
+      {
+        id: "cb-4",
+        title: "Ce desert ai adauga?",
+        type: "text",
+        helper: "raspuns liber optional",
+        required: false,
+      },
+      {
+        id: "cb-5",
+        title: "Ai recomanda candy bar-ul?",
+        type: "nps",
+        helper: "NPS 0-10",
+        required: false,
+      },
+      {
+        id: "cb-6",
+        title: "A fost suficienta varietate?",
+        type: "single",
+        helper: "da / nu / partial",
+        required: false,
+      },
+    ],
+  },
+  {
+    id: "feedback-general",
+    name: "Feedback general",
+    badge: "v5",
+    tablesCount: 0,
+    questions: [
+      {
+        id: "fg-1",
+        title: "Cat de multumit esti de experienta?",
+        type: "rating",
+        helper: "rating 1-5",
+        required: true,
+      },
+      {
+        id: "fg-2",
+        title: "Cum a fost servirea?",
+        type: "rating",
+        helper: "rating 1-5",
+        required: false,
+      },
+      {
+        id: "fg-3",
+        title: "Ce putem imbunatati?",
+        type: "text",
+        helper: "raspuns liber optional",
+        required: false,
+      },
+    ],
+  },
+  {
+    id: "mese-vip",
+    name: "Mese VIP",
+    badge: "v2",
+    tablesCount: 6,
+    questions: [
+      {
+        id: "vip-1",
+        title: "Cum a fost experienta VIP?",
+        type: "rating",
+        helper: "rating 1-5",
+        required: true,
+      },
+      {
+        id: "vip-2",
+        title: "Ai recomanda zona VIP?",
+        type: "nps",
+        helper: "NPS 0-10",
+        required: false,
+      },
+    ],
+  },
+  {
+    id: "foisor-terasa",
+    name: "Foisor / terasa",
+    badge: "v1",
+    tablesCount: 75,
+    questions: [
+      {
+        id: "ft-1",
+        title: "Cum a fost ambianta terasei?",
+        type: "rating",
+        helper: "rating 1-5",
+        required: true,
+      },
+      {
+        id: "ft-2",
+        title: "Temperatura a fost confortabila?",
+        type: "single",
+        helper: "da / nu / partial",
+        required: false,
+      },
+    ],
+  },
+  {
+    id: "corporate",
+    name: "Corporate",
+    badge: "draft",
+    tablesCount: 18,
+    questions: [
+      {
+        id: "cp-1",
+        title: "Cum a fost organizarea evenimentului?",
+        type: "rating",
+        helper: "rating 1-5",
+        required: true,
+      },
+      {
+        id: "cp-2",
+        title: "Ai recomanda locatia pentru alte evenimente corporate?",
+        type: "nps",
+        helper: "NPS 0-10",
+        required: false,
       },
     ],
   },
