@@ -164,10 +164,10 @@ export function HallView({
     );
   }
 
-  function handleQrGenerated(tableId: string) {
+  function handleQrGenerated(tableId: string, qrToken: string) {
     setTables((prev) =>
       prev.map((table) =>
-        table.id === tableId ? { ...table, qrStatus: "activ" } : table,
+        table.id === tableId ? { ...table, qrStatus: "activ", qrToken } : table,
       ),
     );
   }
@@ -272,7 +272,7 @@ export function HallView({
           <TableDrawer
             loadingResponses={loadingResponses}
             onOpenQuestions={openQuestions}
-            onQrGenerated={() => handleQrGenerated(selectedTable.id)}
+            onQrGenerated={(qrToken) => handleQrGenerated(selectedTable.id, qrToken)}
             questionsOpen={questionsOpen}
             questionTitles={questionTitles}
             responses={responses}
@@ -306,7 +306,7 @@ function TableDrawer({
   questionTitles,
 }: {
   onOpenQuestions: () => void;
-  onQrGenerated: () => void;
+  onQrGenerated: (qrToken: string) => void;
   questionsOpen: boolean;
   table: HallTable;
   responses: ResponseItem[];
@@ -324,11 +324,11 @@ function TableDrawer({
       const response = await fetch(`/api/tables/${table.id}/qr`, {
         method: "POST",
       });
+      const json = await response.json().catch(() => null);
       if (!response.ok) {
-        const json = await response.json().catch(() => null);
         throw new Error(json?.error ?? "Nu am putut genera QR-ul");
       }
-      onQrGenerated();
+      onQrGenerated(json.data.token);
     } catch (err) {
       setQrError(err instanceof Error ? err.message : "Nu am putut genera QR-ul");
     } finally {
@@ -379,12 +379,24 @@ function TableDrawer({
               {table.templateId ? "Vezi intrebarile" : "Asigneaza sablon"}
             </button>
             {table.qrStatus === "activ" ? (
-              <a
-                className="rounded-lg bg-[#D5333C] px-4 py-3 text-center text-sm font-black text-white transition hover:bg-[#B92731] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2"
-                href={`/api/tables/${table.id}/qr/download`}
-              >
-                Descarca QR
-              </a>
+              <>
+                <a
+                  className="rounded-lg bg-[#D5333C] px-4 py-3 text-center text-sm font-black text-white transition hover:bg-[#B92731] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2"
+                  href={`/api/tables/${table.id}/qr/download`}
+                >
+                  Descarca QR
+                </a>
+                {table.qrToken && (
+                  <a
+                    className="rounded-lg border border-[#D8B56F] px-4 py-3 text-center text-sm font-black text-[#7B1D22] transition hover:bg-[#FFF2CD] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2"
+                    href={`/feedback/${table.qrToken}`}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Acceseaza formular
+                  </a>
+                )}
+              </>
             ) : (
               <button
                 className="rounded-lg border border-[#D8B56F] px-4 py-3 text-sm font-black text-[#7B1D22] transition hover:bg-[#FFF2CD] disabled:opacity-60"

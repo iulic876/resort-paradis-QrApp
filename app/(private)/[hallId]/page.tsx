@@ -17,7 +17,14 @@ export default async function HallPage({
     where: { hallId },
     orderBy: { number: "asc" },
     include: {
-      qr: { select: { isActive: true, scanCount: true, lastScannedAt: true } },
+      qr: {
+        select: {
+          token: true,
+          isActive: true,
+          scanCount: true,
+          lastScannedAt: true,
+        },
+      },
       _count: { select: { responses: true } },
     },
   });
@@ -29,6 +36,7 @@ export default async function HallPage({
     status: table.status,
     templateId: table.templateId,
     qrStatus: (table.qr?.isActive ? "activ" : "lipsa") as "activ" | "lipsa",
+    qrToken: table.qr?.isActive ? table.qr.token : null,
     scans: table.qr?.scanCount ?? 0,
     responses: table._count.responses,
     lastScan: table.qr?.lastScannedAt?.toISOString() ?? null,

@@ -9,6 +9,7 @@ export type TableListItem = {
   status: "ACTIVE" | "QUIET" | "NEW";
   templateId: string | null;
   qrStatus: "activ" | "lipsa";
+  qrToken: string | null;
   scans: number;
   responses: number;
   lastScan: string | null;
@@ -86,6 +87,7 @@ export function TablesList({
         status: json.data.status,
         templateId: json.data.templateId ?? null,
         qrStatus: "lipsa",
+        qrToken: null,
         scans: 0,
         responses: 0,
         lastScan: null,
