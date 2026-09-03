@@ -1,7 +1,16 @@
 import { redirect } from "next/navigation";
 
-import { halls } from "@/lib/halls-data";
+import { prisma } from "@/lib/prisma";
 
-export default function PrivateIndexPage() {
-  redirect(`/${halls[0].id}`);
+export default async function PrivateIndexPage() {
+  const firstHall = await prisma.hall.findFirst({
+    orderBy: { sortOrder: "asc" },
+    select: { id: true },
+  });
+
+  if (!firstHall) {
+    redirect("/intrebari");
+  }
+
+  redirect(`/${firstHall.id}`);
 }

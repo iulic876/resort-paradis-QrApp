@@ -2,9 +2,16 @@
 
 import { useMemo, useState } from "react";
 
-import type { Table } from "@/lib/halls-data";
-
 const PAGE_SIZE = 6;
+
+export type TableListItem = {
+  id: string;
+  name: string;
+  number: number;
+  qrStatus: "activ" | "lipsa";
+  scans: number;
+  responses: number;
+};
 
 function classNames(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -15,9 +22,9 @@ export function TablesList({
   selectedTableId,
   onSelectTable,
 }: {
-  tables: Table[];
-  selectedTableId: number | null;
-  onSelectTable: (id: number) => void;
+  tables: TableListItem[];
+  selectedTableId: string | null;
+  onSelectTable: (id: string) => void;
 }) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
@@ -28,7 +35,7 @@ export function TablesList({
     return tables.filter(
       (table) =>
         table.name.toLowerCase().includes(query) ||
-        String(table.id).includes(query),
+        String(table.number).includes(query),
     );
   }, [tables, search]);
 
@@ -104,7 +111,7 @@ export function TablesList({
                   onClick={() => onSelectTable(table.id)}
                 >
                   <td className="rounded-l-lg py-3 pl-4 font-black">
-                    M{String(table.id).padStart(2, "0")}
+                    M{String(table.number).padStart(2, "0")}
                   </td>
                   <td className="py-3">{table.name}</td>
                   <td className="py-3">

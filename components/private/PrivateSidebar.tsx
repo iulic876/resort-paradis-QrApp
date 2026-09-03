@@ -3,13 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { getHallStats, halls } from "@/lib/halls-data";
+export type SidebarHall = {
+  id: string;
+  name: string;
+  tablesCount: number;
+  responsesCount: number;
+};
 
 function classNames(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
-export function PrivateSidebar() {
+export function PrivateSidebar({ halls }: { halls: SidebarHall[] }) {
   const pathname = usePathname();
 
   return (
@@ -30,7 +35,7 @@ export function PrivateSidebar() {
                 href={`/${hall.id}`}
                 key={hall.id}
               >
-                {hall.label}
+                {hall.name}
               </Link>
             );
           })}
@@ -41,7 +46,6 @@ export function PrivateSidebar() {
         <nav className="flex flex-col mt-8" aria-label="Sali">
           {halls.map((hall) => {
             const active = pathname === `/${hall.id}`;
-            const stats = getHallStats(hall.id);
 
             return (
               <Link
@@ -60,10 +64,10 @@ export function PrivateSidebar() {
                     active ? "font-semibold" : "font-medium",
                   )}
                 >
-                  {hall.label}
+                  {hall.name}
                 </span>
                 <span className="mt-0.5 block text-xs text-[#9A8C7A]">
-                  {stats.tables} mese · {stats.responses} raspunsuri
+                  {hall.tablesCount} mese · {hall.responsesCount} raspunsuri
                 </span>
               </Link>
             );
