@@ -19,6 +19,7 @@ export async function GET() {
     slug: hall.slug,
     shortLabel: hall.shortLabel,
     sortOrder: hall.sortOrder,
+    defaultTemplateId: hall.defaultTemplateId,
     tablesCount: hall._count.tables,
     responsesCount: hall.tables.reduce(
       (sum, table) => sum + table._count.responses,

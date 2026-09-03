@@ -8,6 +8,18 @@ type RouteParams = { params: Promise<{ templateId: string }> };
 
 const VALID_TYPES = new Set(Object.values(QuestionType));
 
+function parseOptions(value: unknown): string[] | null | undefined {
+  if (value === undefined) return undefined;
+  if (value === null) return null;
+  if (
+    !Array.isArray(value) ||
+    value.some((option) => typeof option !== "string" || !option.trim())
+  ) {
+    return undefined;
+  }
+  return value.map((option) => option.trim());
+}
+
 export async function POST(request: NextRequest, { params }: RouteParams) {
   const { templateId } = await params;
 
@@ -27,6 +39,11 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     return badRequest(`type must be one of: ${[...VALID_TYPES].join(", ")}`);
   }
 
+  if (body?.options !== undefined && parseOptions(body.options) === undefined) {
+    return badRequest("options must be an array of non-empty strings");
+  }
+  const options = parseOptions(body?.options) ?? null;
+
   const maxSortOrder = await prisma.templateQuestion.aggregate({
     where: { templateId },
     _max: { sortOrder: true },
@@ -38,6 +55,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       title,
       type: type as QuestionType,
       helper,
+      options: options ?? undefined,
       required,
       sortOrder: (maxSortOrder._max.sortOrder ?? -1) + 1,
     },

@@ -1,6 +1,8 @@
 import { PrivateSidebar } from "@/components/private/PrivateSidebar";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 async function getSidebarHalls() {
   const halls = await prisma.hall.findMany({
     orderBy: { sortOrder: "asc" },

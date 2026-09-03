@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import type { InputJsonValue } from "@/lib/generated/prisma/internal/prismaNamespace";
+import { JsonNull } from "@/lib/generated/prisma/internal/prismaNamespace";
 
 import { badRequest, notFound } from "@/lib/api-response";
 import { prisma } from "@/lib/prisma";
@@ -9,6 +11,16 @@ type RouteParams = {
 };
 
 const VALID_TYPES = new Set(Object.values(QuestionType));
+
+function parseOptions(value: unknown): string[] | undefined {
+  if (
+    !Array.isArray(value) ||
+    value.some((option) => typeof option !== "string" || !option.trim())
+  ) {
+    return undefined;
+  }
+  return value.map((option) => option.trim());
+}
 
 export async function PATCH(request: NextRequest, { params }: RouteParams) {
   const { templateId, questionId } = await params;
@@ -25,6 +37,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     title?: string;
     type?: QuestionType;
     helper?: string | null;
+    options?: InputJsonValue | typeof JsonNull;
     required?: boolean;
   } = {};
 
@@ -49,6 +62,18 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       return badRequest("helper must be a string or null");
     }
     data.helper = body.helper;
+  }
+
+  if (body?.options !== undefined) {
+    if (body.options === null) {
+      data.options = JsonNull;
+    } else {
+      const options = parseOptions(body.options);
+      if (options === undefined) {
+        return badRequest("options must be an array of non-empty strings");
+      }
+      data.options = options;
+    }
   }
 
   if (body?.required !== undefined) {

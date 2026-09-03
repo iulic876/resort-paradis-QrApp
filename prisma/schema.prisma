@@ -135,6 +135,7 @@ model TemplateQuestion {
   title      String
   type       QuestionType
   helper     String?
+  options    Json?
   required   Boolean      @default(false)
   sortOrder  Int          @default(0)
   createdAt  DateTime     @default(now())

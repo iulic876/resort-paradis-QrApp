@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { FormEvent, useState } from "react";
 
 export type SidebarHall = {
   id: string;
@@ -16,6 +17,44 @@ function classNames(...classes: Array<string | false | undefined>) {
 
 export function PrivateSidebar({ halls }: { halls: SidebarHall[] }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [addingOpen, setAddingOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [shortLabel, setShortLabel] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
+
+  async function submitNewHall(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const trimmedName = name.trim();
+    const trimmedShortLabel = shortLabel.trim();
+    if (!trimmedName || !trimmedShortLabel) return;
+
+    setCreating(true);
+    setCreateError(null);
+    try {
+      const response = await fetch("/api/halls", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: trimmedName, shortLabel: trimmedShortLabel }),
+      });
+      const json = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(json?.error ?? "Nu am putut adauga sala");
+      }
+      setName("");
+      setShortLabel("");
+      setAddingOpen(false);
+      router.push(`/${json.data.id}`);
+      router.refresh();
+    } catch (err) {
+      setCreateError(
+        err instanceof Error ? err.message : "Nu am putut adauga sala",
+      );
+    } finally {
+      setCreating(false);
+    }
+  }
 
   return (
     <>
@@ -76,6 +115,10 @@ export function PrivateSidebar({ halls }: { halls: SidebarHall[] }) {
 
         <button
           className="mt-4 flex items-center gap-2 pl-3 text-left text-sm font-medium text-[#6C6259] transition hover:text-[#211B18]"
+          onClick={() => {
+            setAddingOpen((prev) => !prev);
+            setCreateError(null);
+          }}
           type="button"
         >
           <svg
@@ -92,6 +135,51 @@ export function PrivateSidebar({ halls }: { halls: SidebarHall[] }) {
           </svg>
           Adauga sala
         </button>
+
+        {addingOpen && (
+          <form className="mt-3 space-y-2 pl-3" onSubmit={submitNewHall}>
+            <input
+              autoFocus
+              className="w-full rounded-lg border border-[#E8D9BE] bg-white px-3 py-2 text-sm text-[#211B18] placeholder:text-[#9A8C7A] focus:outline-none focus:ring-2 focus:ring-[#D5333C]"
+              onChange={(event) => setName(event.target.value)}
+              placeholder="Nume sala..."
+              type="text"
+              value={name}
+            />
+            <input
+              className="w-full rounded-lg border border-[#E8D9BE] bg-white px-3 py-2 text-sm text-[#211B18] placeholder:text-[#9A8C7A] focus:outline-none focus:ring-2 focus:ring-[#D5333C]"
+              maxLength={4}
+              onChange={(event) => setShortLabel(event.target.value)}
+              placeholder="Eticheta scurta (ex: TR)..."
+              type="text"
+              value={shortLabel}
+            />
+            {createError && (
+              <p className="text-xs text-[#B3261E]">{createError}</p>
+            )}
+            <div className="flex gap-2">
+              <button
+                className="rounded-lg bg-[#D5333C] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#B92731] disabled:opacity-60"
+                disabled={creating || !name.trim() || !shortLabel.trim()}
+                type="submit"
+              >
+                {creating ? "Se adauga..." : "Adauga"}
+              </button>
+              <button
+                className="rounded-lg border border-[#E8D9BE] px-3 py-1.5 text-xs font-semibold text-[#776D64] transition hover:bg-white"
+                onClick={() => {
+                  setAddingOpen(false);
+                  setName("");
+                  setShortLabel("");
+                  setCreateError(null);
+                }}
+                type="button"
+              >
+                Anuleaza
+              </button>
+            </div>
+          </form>
+        )}
 
         <div className="mt-6 border-t border-[#E6D6B9] pt-4">
           <Link
