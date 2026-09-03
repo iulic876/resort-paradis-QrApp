@@ -1,0 +1,209 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]: QRApp
+      - navigation "Mese" [ref=e6]:
+        - button "12" [ref=e7]
+        - button "7" [ref=e8]
+        - button "4" [ref=e9]
+        - button "15" [ref=e10]
+    - generic [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - paragraph [ref=e14]: Feedback QR
+          - heading "Mese si raspunsuri" [level=1] [ref=e15]
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - paragraph [ref=e18]: Scanari
+            - paragraph [ref=e19]: "116"
+          - generic [ref=e20]:
+            - paragraph [ref=e21]: Raspunsuri
+            - paragraph [ref=e22]: "40"
+          - generic [ref=e23]:
+            - paragraph [ref=e24]: Rating mediu
+            - paragraph [ref=e25]: "4.7"
+      - generic [ref=e26]:
+        - button "Masa Masa 12 Activ Scanari 48 Rasp. 18 Rating 4.8 Ultima scanare 21:44" [ref=e27]:
+          - generic [ref=e28]:
+            - generic [ref=e29]:
+              - paragraph [ref=e30]: Masa
+              - heading "Masa 12" [level=2] [ref=e31]
+            - generic [ref=e32]: Activ
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - paragraph [ref=e35]: Scanari
+              - paragraph [ref=e36]: "48"
+            - generic [ref=e37]:
+              - paragraph [ref=e38]: Rasp.
+              - paragraph [ref=e39]: "18"
+            - generic [ref=e40]:
+              - paragraph [ref=e41]: Rating
+              - paragraph [ref=e42]: "4.8"
+          - generic [ref=e43]:
+            - generic [ref=e44]: Ultima scanare
+            - generic [ref=e45]: 21:44
+        - button "Masa Masa 7 Activ Scanari 35 Rasp. 11 Rating 4.6 Ultima scanare 21:36" [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]:
+              - paragraph [ref=e49]: Masa
+              - heading "Masa 7" [level=2] [ref=e50]
+            - generic [ref=e51]: Activ
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - paragraph [ref=e54]: Scanari
+              - paragraph [ref=e55]: "35"
+            - generic [ref=e56]:
+              - paragraph [ref=e57]: Rasp.
+              - paragraph [ref=e58]: "11"
+            - generic [ref=e59]:
+              - paragraph [ref=e60]: Rating
+              - paragraph [ref=e61]: "4.6"
+          - generic [ref=e62]:
+            - generic [ref=e63]: Ultima scanare
+            - generic [ref=e64]: 21:36
+        - button "Masa Masa 4 Linistit Scanari 21 Rasp. 8 Rating 4.2 Ultima scanare 20:51" [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - paragraph [ref=e68]: Masa
+              - heading "Masa 4" [level=2] [ref=e69]
+            - generic [ref=e70]: Linistit
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - paragraph [ref=e73]: Scanari
+              - paragraph [ref=e74]: "21"
+            - generic [ref=e75]:
+              - paragraph [ref=e76]: Rasp.
+              - paragraph [ref=e77]: "8"
+            - generic [ref=e78]:
+              - paragraph [ref=e79]: Rating
+              - paragraph [ref=e80]: "4.2"
+          - generic [ref=e81]:
+            - generic [ref=e82]: Ultima scanare
+            - generic [ref=e83]: 20:51
+        - button "Masa Masa 15 Nou Scanari 12 Rasp. 3 Rating 5.0 Ultima scanare 21:12" [ref=e84]:
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - paragraph [ref=e87]: Masa
+              - heading "Masa 15" [level=2] [ref=e88]
+            - generic [ref=e89]: Nou
+          - generic [ref=e90]:
+            - generic [ref=e91]:
+              - paragraph [ref=e92]: Scanari
+              - paragraph [ref=e93]: "12"
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: Rasp.
+              - paragraph [ref=e96]: "3"
+            - generic [ref=e97]:
+              - paragraph [ref=e98]: Rating
+              - paragraph [ref=e99]: "5.0"
+          - generic [ref=e100]:
+            - generic [ref=e101]: Ultima scanare
+            - generic [ref=e102]: 21:12
+  - complementary "Detalii Masa 12" [ref=e103]:
+    - generic [ref=e104]:
+      - heading "Masa 12" [level=2] [ref=e106]
+      - generic [ref=e107]:
+        - img "QR Masa 12" [ref=e109]
+        - generic [ref=e110]:
+          - button "Vezi intrebarile" [ref=e111]
+          - button "Descarca QR" [ref=e112]
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - paragraph [ref=e116]: Scanari
+          - paragraph [ref=e117]: "48"
+        - generic [ref=e118]:
+          - paragraph [ref=e119]: Raspunsuri
+          - paragraph [ref=e120]: "18"
+        - generic [ref=e121]:
+          - paragraph [ref=e122]: Rating
+          - paragraph [ref=e123]: "4.8"
+        - generic [ref=e124]:
+          - paragraph [ref=e125]: Ultima scanare
+          - paragraph [ref=e126]: 21:44
+      - generic [ref=e128]:
+        - heading "Ultimele raspunsuri" [level=3] [ref=e129]
+        - generic [ref=e130]:
+          - generic [ref=e131]:
+            - generic [ref=e132]: 21:44
+            - generic [ref=e133]: 5/5
+            - generic [ref=e134]: Servire foarte buna
+          - generic [ref=e135]:
+            - generic [ref=e136]: 21:31
+            - generic [ref=e137]: 5/5
+            - generic [ref=e138]: Totul a fost rapid
+          - generic [ref=e139]:
+            - generic [ref=e140]: 21:08
+            - generic [ref=e141]: 4/5
+            - generic [ref=e142]: Muzica putin tare
+      - button "Vezi toate raspunsurile mesei" [ref=e143]
+  - complementary "Intrebarile Mesei 12":
+    - generic:
+      - generic:
+        - generic:
+          - paragraph: Masa 12
+          - heading "Intrebarile mesei" [level=2]
+        - button "Inchide"
+      - generic:
+        - generic:
+          - paragraph: Intrebari
+          - paragraph: "4"
+        - generic:
+          - paragraph: Raspunsuri
+          - paragraph: "18"
+      - generic:
+        - article:
+          - generic:
+            - heading "Cum a fost servirea?" [level=3]
+            - generic: 5/5
+          - paragraph: 12 raspunsuri pozitive
+          - generic:
+            - generic:
+              - generic: 21:44
+              - generic: 5/5
+              - generic: Servire foarte buna
+            - generic:
+              - generic: 20:58
+              - generic: 5/5
+              - generic: Chelnerul a fost atent
+        - article:
+          - generic:
+            - heading "Cat de rapid a venit comanda?" [level=3]
+            - generic: 5/5
+          - paragraph: Timp perceput foarte bun
+          - generic:
+            - generic:
+              - generic: 21:31
+              - generic: 5/5
+              - generic: Totul a fost rapid
+            - generic:
+              - generic: 20:46
+              - generic: 5/5
+              - generic: Comanda a venit repede
+        - article:
+          - generic:
+            - heading "Cum a fost atmosfera?" [level=3]
+            - generic: 4/5
+          - paragraph: Un raspuns semnaleaza volum ridicat
+          - generic:
+            - generic:
+              - generic: 21:08
+              - generic: 4/5
+              - generic: Muzica putin tare
+            - generic:
+              - generic: 20:12
+              - generic: 5/5
+              - generic: Atmosfera placuta
+        - article:
+          - generic:
+            - heading "Ati recomanda restaurantul?" [level=3]
+            - generic: 94%
+          - paragraph: 17 din 18 raspunsuri sunt da
+          - generic:
+            - generic:
+              - generic: 21:44
+              - generic: Da
+              - generic: As reveni cu prietenii
+            - generic:
+              - generic: 19:55
+              - generic: Da
+              - generic: Experienta buna per total

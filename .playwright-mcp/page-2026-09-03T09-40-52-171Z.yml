@@ -1,0 +1,45 @@
+- generic [active] [ref=f1e1]:
+  - main [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - link "Dashboard" [ref=f1e4] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f1e5]: 05 Public Feedback Form
+    - generic [ref=f1e6]:
+      - generic [ref=f1e7]:
+        - paragraph [ref=f1e8]: Paradis
+        - paragraph [ref=f1e9]: feedback eveniment
+      - generic [ref=f1e10]:
+        - generic [ref=f1e11]:
+          - heading "Cat de multumit esti de experienta de azi?" [level=1] [ref=f1e12]
+          - generic [ref=f1e13]:
+            - button "1" [ref=f1e14]
+            - button "2" [ref=f1e15]
+            - button "3" [ref=f1e16]
+            - button "4" [ref=f1e17]
+            - button "5" [ref=f1e18]
+        - generic [ref=f1e19]:
+          - heading "Cum a fost servirea personalului?" [level=2] [ref=f1e20]
+          - generic [ref=f1e21]:
+            - button "Excelenta" [ref=f1e22]
+            - button "Buna" [ref=f1e25]
+        - generic [ref=f1e28]:
+          - heading "Ce putem imbunatati?" [level=2] [ref=f1e29]
+          - textbox "Scrie aici optional..." [ref=f1e30]
+        - generic [ref=f1e31]:
+          - heading "Ai recomanda Paradis unui prieten?" [level=2] [ref=f1e32]
+          - generic [ref=f1e33]:
+            - button "0" [ref=f1e34]
+            - button "1" [ref=f1e35]
+            - button "2" [ref=f1e36]
+            - button "3" [ref=f1e37]
+            - button "4" [ref=f1e38]
+            - button "5" [ref=f1e39]
+            - button "6" [ref=f1e40]
+            - button "7" [ref=f1e41]
+            - button "8" [ref=f1e42]
+            - button "9" [ref=f1e43]
+            - button "10" [ref=f1e44]
+        - button "Trimite feedback" [ref=f1e45]
+        - paragraph [ref=f1e46]: Nu este necesar cont. Datele mesei sunt citite automat din QR.
+  - button "Open Next.js Dev Tools" [ref=f1e52] [cursor=pointer]
+  - alert [ref=f1e56]
