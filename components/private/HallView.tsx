@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { type RefObject, useEffect, useMemo, useRef, useState } from "react";
 
 import { TablesList, type TableListItem } from "@/components/private/TablesList";
 
@@ -69,6 +69,7 @@ export function HallView({
   tables: HallTable[];
 }) {
   const router = useRouter();
+  const tableDetailsRef = useRef<HTMLElement | null>(null);
   const [tables, setTables] = useState(initialTables);
   const [selectedTableId, setSelectedTableId] = useState<string | null>(
     initialTables[0]?.id ?? null,
@@ -197,11 +198,23 @@ export function HallView({
     setQuestionsOpen(true);
   }
 
+  function scrollToTableDetailsOnMobile() {
+    if (window.innerWidth >= 1024) return;
+
+    window.requestAnimationFrame(() => {
+      tableDetailsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }
+
   async function selectTable(id: string) {
     setSelectedTableId(id);
     setQuestionsOpen(false);
     setLoadingResponses(true);
     setSummary(null);
+    scrollToTableDetailsOnMobile();
     try {
       const [responsesResult, summaryResult] = await Promise.all([
         fetch(`/api/tables/${id}/responses?pageSize=5`),
@@ -271,6 +284,7 @@ export function HallView({
       {selectedTable && (
         <>
           <TableDrawer
+            detailsRef={tableDetailsRef}
             loadingResponses={loadingResponses}
             onOpenQuestions={openQuestions}
             onQrGenerated={(qrToken) => handleQrGenerated(selectedTable.id, qrToken)}
@@ -297,6 +311,7 @@ export function HallView({
 }
 
 function TableDrawer({
+  detailsRef,
   onOpenQuestions,
   onQrGenerated,
   questionsOpen,
@@ -306,6 +321,7 @@ function TableDrawer({
   summary,
   questionTitles,
 }: {
+  detailsRef: RefObject<HTMLElement | null>;
   onOpenQuestions: () => void;
   onQrGenerated: (qrToken: string) => void;
   questionsOpen: boolean;
@@ -339,8 +355,9 @@ function TableDrawer({
 
   return (
     <aside
+      ref={detailsRef}
       className={classNames(
-        "mx-3 mb-5 rounded-lg border border-[#D8B56F] bg-white px-4 py-5 shadow-[0_16px_44px_rgba(70,49,24,0.12)] transition duration-300 sm:mx-6 sm:px-6 lg:fixed lg:bottom-6 lg:right-6 lg:top-6 lg:z-30 lg:mx-0 lg:mb-0 lg:w-[356px] lg:px-7 lg:py-6 lg:shadow-[0_24px_80px_rgba(70,49,24,0.18)]",
+        "mx-3 mb-5 scroll-mt-20 rounded-lg border border-[#D8B56F] bg-white px-4 py-5 shadow-[0_16px_44px_rgba(70,49,24,0.12)] transition duration-300 sm:mx-6 sm:px-6 lg:fixed lg:bottom-6 lg:right-6 lg:top-6 lg:z-30 lg:mx-0 lg:mb-0 lg:w-[356px] lg:scroll-mt-0 lg:px-7 lg:py-6 lg:shadow-[0_24px_80px_rgba(70,49,24,0.18)]",
         questionsOpen && "lg:scale-[0.985] lg:opacity-70",
       )}
       aria-label={`Detalii ${table.name}`}
