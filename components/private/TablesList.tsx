@@ -114,11 +114,11 @@ export function TablesList({
   }, [tables, search]);
 
   return (
-    <div className="w-full rounded-xl border border-[#E8D9BE] bg-white p-6">
-      <div className="flex items-center justify-between">
+    <div className="w-full rounded-lg border border-[#E8D9BE] bg-white p-4 sm:p-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-xl font-black text-[#211B18]">Lista mese</h2>
         <button
-          className="flex items-center gap-1.5 rounded-lg border border-[#D8B56F] px-3 py-1.5 text-sm font-semibold text-[#7B1D22] transition hover:bg-[#FFF2CD]"
+          className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-lg border border-[#D8B56F] px-3 py-2 text-sm font-semibold text-[#7B1D22] transition hover:bg-[#FFF2CD] sm:w-auto sm:py-1.5"
           onClick={() => {
             setAddingOpen((prev) => !prev);
             setCreateError(null);
@@ -154,7 +154,7 @@ export function TablesList({
             type="text"
             value={newTableName}
           />
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:flex">
             <button
               className="rounded-lg bg-[#D5333C] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#B92731] disabled:opacity-60"
               disabled={creating || !newTableName.trim()}
@@ -189,7 +189,81 @@ export function TablesList({
         value={search}
       />
 
-      <div className="mt-5 max-h-[560px] overflow-y-auto overflow-x-auto">
+      <div className="mt-5 space-y-3 md:hidden">
+        {filtered.map((table) => {
+          const active = table.id === selectedTableId;
+
+          return (
+            <article
+              className={classNames(
+                "w-full cursor-pointer rounded-lg border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2 focus:ring-offset-white",
+                active
+                  ? "border-[#D8B56F] bg-[#FFF2CD]"
+                  : "border-[#E8D9BE] bg-white",
+              )}
+              key={table.id}
+              onClick={() => onSelectTable(table.id)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onSelectTable(table.id);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#9A8C7A]">
+                    M{String(table.number).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-1 truncate text-lg font-black text-[#211B18]">
+                    {table.name}
+                  </h3>
+                </div>
+                <span
+                  className={classNames(
+                    "shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold",
+                    table.qrStatus === "activ"
+                      ? "border-[#D8B56F] bg-white text-[#7B1D22]"
+                      : "border-[#E7B3B3] bg-[#FBEAEA] text-[#B3261E]",
+                  )}
+                >
+                  {table.qrStatus === "activ" ? "QR activ" : "Print lipsa"}
+                </span>
+              </div>
+
+              <div className="mt-4 grid grid-cols-3 gap-2 border-t border-[#E8D9BE] pt-3">
+                <MobileMetric label="Scanari" value={table.scans} />
+                <MobileMetric label="Rasp." value={table.responses} />
+                <MobileMetric label="Status" value={table.status} />
+              </div>
+
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <span className="text-sm font-semibold text-[#7B1D22]">
+                  Vezi detalii
+                </span>
+                <button
+                  className="rounded-md px-2 py-1 text-xs font-semibold text-[#B3261E] transition hover:bg-[#FBEAEA] disabled:opacity-60"
+                  disabled={deletingId === table.id}
+                  onClick={(event) => deleteTable(event, table)}
+                  type="button"
+                >
+                  {deletingId === table.id ? "..." : "Sterge"}
+                </button>
+              </div>
+            </article>
+          );
+        })}
+
+        {filtered.length === 0 && (
+          <p className="py-6 text-center text-sm text-[#776D64]">
+            Nicio masa gasita.
+          </p>
+        )}
+      </div>
+
+      <div className="mt-5 hidden max-h-[560px] overflow-y-auto overflow-x-auto md:block">
         <table className="w-full min-w-[560px] border-separate border-spacing-y-3 text-sm">
           <thead className="sticky top-0 z-10 bg-white">
             <tr className="text-left text-xs font-semibold text-[#9A8C7A]">
@@ -274,6 +348,21 @@ export function TablesList({
       <p className="mt-4 text-sm text-[#776D64]">
         {filtered.length === 0 ? "0 mese" : `${filtered.length} mese`}
       </p>
+    </div>
+  );
+}
+
+function MobileMetric({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) {
+  return (
+    <div className="min-w-0">
+      <p className="text-[11px] text-[#776D64]">{label}</p>
+      <p className="mt-1 truncate text-sm font-black text-[#211B18]">{value}</p>
     </div>
   );
 }

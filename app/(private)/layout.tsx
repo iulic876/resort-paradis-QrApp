@@ -1,4 +1,9 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+import { AdminDatabaseUnavailable } from "@/components/private/AdminDatabaseUnavailable";
 import { PrivateSidebar } from "@/components/private/PrivateSidebar";
+import { ADMIN_SESSION_COOKIE, isAdminSessionValid } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -28,12 +33,26 @@ export default async function PrivateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const halls = await getSidebarHalls();
+  const cookieStore = await cookies();
+  const isAuthenticated = await isAdminSessionValid(
+    cookieStore.get(ADMIN_SESSION_COOKIE)?.value,
+  );
+
+  if (!isAuthenticated) {
+    redirect("/login");
+  }
+
+  let halls;
+  try {
+    halls = await getSidebarHalls();
+  } catch {
+    return <AdminDatabaseUnavailable />;
+  }
 
   return (
-    <div className="min-h-screen bg-[#F7F1E6] text-[#211B18]">
+    <div className="min-h-screen overflow-x-hidden bg-[#F7F1E6] text-[#211B18]">
       <PrivateSidebar halls={halls} />
-      <main className="min-h-screen lg:pl-[240px]">{children}</main>
+      <main className="min-h-screen min-w-0 lg:pl-[240px]">{children}</main>
     </div>
   );
 }

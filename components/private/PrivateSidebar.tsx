@@ -58,26 +58,39 @@ export function PrivateSidebar({ halls }: { halls: SidebarHall[] }) {
 
   return (
     <>
-      <div className="sticky top-0 z-40 border-b border-[#E6D6B9] bg-[#FFF9EF]/95 px-4 py-3 backdrop-blur lg:hidden">
-        <div className="flex items-center gap-3 overflow-x-auto">
-          {halls.map((hall) => {
-            const active = pathname === `/${hall.id}`;
+      <div className="sticky top-0 z-40 border-b border-[#E6D6B9] bg-[#FFF9EF]/95 px-3 py-2 backdrop-blur lg:hidden">
+        <div className="flex items-center gap-2">
+          <nav
+            className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            aria-label="Sali"
+          >
+            {halls.map((hall) => {
+              const active = pathname === `/${hall.id}`;
 
-            return (
-              <Link
-                className={classNames(
-                  "flex h-9 shrink-0 items-center rounded-md px-3 text-sm transition",
-                  active
-                    ? "bg-[#F5E6C4] font-semibold text-[#7B1D22]"
-                    : "text-[#6C6259] hover:bg-white",
-                )}
-                href={`/${hall.id}`}
-                key={hall.id}
-              >
-                {hall.name}
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  className={classNames(
+                    "flex min-h-11 max-w-[72vw] shrink-0 items-center rounded-lg px-4 text-sm font-semibold transition",
+                    active
+                      ? "bg-[#F5E6C4] text-[#7B1D22] shadow-[inset_0_-3px_0_rgba(123,29,34,0.18)]"
+                      : "text-[#6C6259] hover:bg-white",
+                  )}
+                  href={`/${hall.id}`}
+                  key={hall.id}
+                >
+                  <span className="truncate">{hall.name}</span>
+                </Link>
+              );
+            })}
+          </nav>
+          <form action="/api/auth/logout" className="shrink-0" method="post">
+            <button
+              className="min-h-11 rounded-lg border border-[#E8D9BE] px-3 text-xs font-black text-[#7B1D22] transition hover:bg-white"
+              type="submit"
+            >
+              Iesire
+            </button>
+          </form>
         </div>
       </div>
 
@@ -194,6 +207,15 @@ export function PrivateSidebar({ halls }: { halls: SidebarHall[] }) {
             Toate intrebarile
           </Link>
         </div>
+
+        <form action="/api/auth/logout" className="mt-auto border-t border-[#E6D6B9] pt-4" method="post">
+          <button
+            className="w-full rounded-lg border border-[#E8D9BE] px-3 py-2 text-left text-sm font-semibold text-[#7B1D22] transition hover:bg-white"
+            type="submit"
+          >
+            Iesire
+          </button>
+        </form>
       </aside>
     </>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -219,17 +220,17 @@ export function HallView({
   }
 
   return (
-    <div className="min-h-screen overflow-hidden">
+    <div className="min-h-screen overflow-x-hidden">
       <section
         className={classNames(
-          "flex min-w-0 flex-1 flex-col px-4 py-5 sm:px-6",
+          "flex min-w-0 flex-1 flex-col px-3 py-4 sm:px-6 sm:py-5",
           Boolean(selectedTable) && "lg:pr-[420px]",
         )}
       >
-        <header className="mb-6 flex flex-col gap-4 pb-5 md:flex-row md:items-end md:justify-between">
-          <div>
+        <header className="mb-4 flex flex-col gap-3 pb-3 sm:mb-6 sm:gap-4 sm:pb-5 md:flex-row md:items-end md:justify-between">
+          <div className="min-w-0">
             <input
-              className="mt-2 w-full min-w-0 border-b-2 border-transparent bg-transparent text-3xl font-black leading-tight text-[#211B18] transition focus:border-[#D5333C] focus:outline-none sm:text-4xl"
+              className="w-full min-w-0 border-b-2 border-transparent bg-transparent text-2xl font-black leading-tight text-[#211B18] transition focus:border-[#D5333C] focus:outline-none sm:text-4xl"
               onBlur={saveHallName}
               onChange={(event) => setName(event.target.value)}
               type="text"
@@ -240,7 +241,7 @@ export function HallView({
             )}
           </div>
           <button
-            className="shrink-0 rounded-lg border border-[#E8B4B4] px-3 py-1.5 text-xs font-semibold text-[#B3261E] transition hover:bg-[#FBEAEA] disabled:opacity-60"
+            className="w-fit shrink-0 rounded-lg border border-[#E8B4B4] px-3 py-1.5 text-xs font-semibold text-[#B3261E] transition hover:bg-[#FBEAEA] disabled:opacity-60"
             disabled={deletingHall}
             onClick={deleteHall}
             type="button"
@@ -339,19 +340,24 @@ function TableDrawer({
   return (
     <aside
       className={classNames(
-        "fixed bottom-3 right-3 top-3 z-30 w-[min(356px,calc(100vw-24px))] rounded-lg border border-[#D8B56F] bg-white px-7 py-6 shadow-[0_24px_80px_rgba(70,49,24,0.18)] transition duration-300 sm:right-6 sm:top-6 sm:bottom-6",
-        questionsOpen && "scale-[0.985] opacity-70",
+        "mx-3 mb-5 rounded-lg border border-[#D8B56F] bg-white px-4 py-5 shadow-[0_16px_44px_rgba(70,49,24,0.12)] transition duration-300 sm:mx-6 sm:px-6 lg:fixed lg:bottom-6 lg:right-6 lg:top-6 lg:z-30 lg:mx-0 lg:mb-0 lg:w-[356px] lg:px-7 lg:py-6 lg:shadow-[0_24px_80px_rgba(70,49,24,0.18)]",
+        questionsOpen && "lg:scale-[0.985] lg:opacity-70",
       )}
       aria-label={`Detalii ${table.name}`}
     >
-      <div className="flex h-full flex-col">
-        <div className="mb-5">
-          <h2 className="text-3xl font-black leading-none">{table.name}</h2>
+      <div className="flex h-full flex-col lg:overflow-y-auto">
+        <div className="mb-4 sm:mb-5">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#8D7560] lg:hidden">
+            Detalii masa
+          </p>
+          <h2 className="mt-1 text-2xl font-black leading-tight sm:text-3xl lg:mt-0 lg:leading-none">
+            {table.name}
+          </h2>
         </div>
 
-        <div className="flex items-start gap-5">
+        <div className="grid gap-5 min-[430px]:grid-cols-[110px_1fr]">
           {table.qrStatus === "activ" ? (
-            <div className="relative h-[220px] w-[110px] shrink-0 overflow-hidden rounded-md border border-[#E8D9BE] bg-[#FFF9EF]">
+            <div className="relative mx-auto h-[220px] w-[110px] shrink-0 overflow-hidden rounded-md border border-[#E8D9BE] bg-[#FFF9EF] min-[430px]:mx-0">
               <Image
                 alt={`Card QR ${table.name}`}
                 className="object-contain"
@@ -363,7 +369,7 @@ function TableDrawer({
               />
             </div>
           ) : (
-            <div className="flex h-[220px] w-[110px] shrink-0 items-center justify-center rounded-md border border-[#E8D9BE] bg-[#FFF9EF] text-center text-xs text-[#9A8C7A]">
+            <div className="mx-auto flex h-[220px] w-[110px] shrink-0 items-center justify-center rounded-md border border-[#E8D9BE] bg-[#FFF9EF] text-center text-xs text-[#9A8C7A] min-[430px]:mx-0">
               QR neasignat
             </div>
           )}
@@ -372,7 +378,7 @@ function TableDrawer({
             <button
               aria-controls="questions-drawer"
               aria-expanded={questionsOpen}
-              className="rounded-lg bg-[#D5333C] px-4 py-3 text-sm font-black text-white transition hover:bg-[#B92731] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2"
+              className="min-h-12 rounded-lg bg-[#D5333C] px-4 py-3 text-sm font-black text-white transition hover:bg-[#B92731] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2"
               onClick={onOpenQuestions}
               type="button"
             >
@@ -381,14 +387,14 @@ function TableDrawer({
             {table.qrStatus === "activ" ? (
               <>
                 <a
-                  className="rounded-lg bg-[#D5333C] px-4 py-3 text-center text-sm font-black text-white transition hover:bg-[#B92731] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2"
+                  className="min-h-12 rounded-lg bg-[#D5333C] px-4 py-3 text-center text-sm font-black text-white transition hover:bg-[#B92731] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2"
                   href={`/api/tables/${table.id}/qr/download`}
                 >
                   Descarca QR
                 </a>
                 {table.qrToken && (
                   <a
-                    className="rounded-lg border border-[#D8B56F] px-4 py-3 text-center text-sm font-black text-[#7B1D22] transition hover:bg-[#FFF2CD] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2"
+                    className="min-h-12 rounded-lg border border-[#D8B56F] px-4 py-3 text-center text-sm font-black text-[#7B1D22] transition hover:bg-[#FFF2CD] focus:outline-none focus:ring-2 focus:ring-[#D5333C] focus:ring-offset-2"
                     href={`/feedback/${table.qrToken}`}
                     rel="noopener noreferrer"
                     target="_blank"
@@ -399,7 +405,7 @@ function TableDrawer({
               </>
             ) : (
               <button
-                className="rounded-lg border border-[#D8B56F] px-4 py-3 text-sm font-black text-[#7B1D22] transition hover:bg-[#FFF2CD] disabled:opacity-60"
+                className="min-h-12 rounded-lg border border-[#D8B56F] px-4 py-3 text-sm font-black text-[#7B1D22] transition hover:bg-[#FFF2CD] disabled:opacity-60"
                 disabled={generatingQr}
                 onClick={generateQr}
                 type="button"
@@ -412,9 +418,9 @@ function TableDrawer({
 
         {qrError && <p className="mt-2 text-xs text-[#B3261E]">{qrError}</p>}
 
-        <div className="my-6 border-t border-[#E6D6B9]" />
+        <div className="my-5 border-t border-[#E6D6B9] sm:my-6" />
 
-        <div className="grid grid-cols-2 gap-x-12 gap-y-4">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:gap-x-12">
           <Stat label="Scanari" value={table.scans} />
           <Stat label="Raspunsuri" value={table.responses} />
           <Stat label="Status" value={table.status} />
@@ -423,7 +429,7 @@ function TableDrawer({
 
         {summary && summary.length > 0 && (
           <>
-            <div className="my-7 border-t border-[#E6D6B9]" />
+            <div className="my-6 border-t border-[#E6D6B9] sm:my-7" />
             <section>
               <h3 className="mb-4 text-lg font-black">Statistici pe intrebari</h3>
               <div className="space-y-3">
@@ -461,7 +467,7 @@ function TableDrawer({
           </>
         )}
 
-        <div className="my-7 border-t border-[#E6D6B9]" />
+        <div className="my-6 border-t border-[#E6D6B9] sm:my-7" />
 
         <section className="min-h-0 flex-1">
           <h3 className="mb-4 text-lg font-black">Ultimele raspunsuri</h3>
@@ -535,7 +541,7 @@ function QuestionsDrawer({
       />
       <aside
         className={classNames(
-          "fixed bottom-3 right-3 top-3 z-50 w-[min(356px,calc(100vw-24px))] rounded-lg border border-[#D8B56F] bg-white px-7 py-6 shadow-[0_24px_80px_rgba(70,49,24,0.24)] transition duration-300 sm:right-6 sm:top-6 sm:bottom-6",
+          "fixed inset-x-3 bottom-3 top-3 z-50 w-auto rounded-lg border border-[#D8B56F] bg-white px-4 py-5 shadow-[0_24px_80px_rgba(70,49,24,0.24)] transition duration-300 sm:bottom-6 sm:right-6 sm:left-auto sm:top-6 sm:w-[min(356px,calc(100vw-48px))] sm:px-7 sm:py-6",
           open
             ? "translate-x-0 opacity-100"
             : "pointer-events-none translate-x-[calc(100%+32px)] opacity-0",
@@ -590,9 +596,9 @@ function QuestionsDrawer({
             <p className="text-sm text-[#776D64]">
               Aceasta masa nu are un sablon propriu. Alege unul din lista de
               mai sus sau gestioneaza sabloanele din pagina{" "}
-              <a className="font-semibold text-[#7B1D22] underline" href="/intrebari">
+              <Link className="font-semibold text-[#7B1D22] underline" href="/intrebari">
                 Toate intrebarile
-              </a>
+              </Link>
               .
             </p>
           ) : !activeTemplate ? (
@@ -641,7 +647,9 @@ function Stat({ label, value }: { label: string; value: string | number }) {
   return (
     <div>
       <p className="text-xs text-[#776D64]">{label}</p>
-      <p className="mt-1 text-xl font-black text-[#211B18]">{value}</p>
+      <p className="mt-1 break-words text-lg font-black text-[#211B18] sm:text-xl">
+        {value}
+      </p>
     </div>
   );
 }

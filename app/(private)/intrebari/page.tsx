@@ -276,30 +276,6 @@ export default function QuestionTemplatesPage() {
     }
   }
 
-  async function deleteQuestion(questionId: string) {
-    if (!selected) return;
-    if (!confirm("Stergi aceasta intrebare din sablon?")) return;
-
-    const previous = selected.questions;
-    patchTemplate(selected.id, {
-      questions: selected.questions.filter((question) => question.id !== questionId),
-    });
-
-    try {
-      const response = await fetch(
-        `/api/question-templates/${selected.id}/questions/${questionId}`,
-        { method: "DELETE" },
-      );
-      if (!response.ok && response.status !== 204) {
-        const json = await parseJson(response);
-        throw new Error(json?.error ?? "Nu am putut sterge intrebarea");
-      }
-    } catch (err) {
-      patchTemplate(selected.id, { questions: previous });
-      setError(err instanceof Error ? err.message : "Nu am putut sterge intrebarea");
-    }
-  }
-
   async function assignHallDefault(hallId: string, templateId: string | null) {
     setAssigningHallId(hallId);
     setError(null);
